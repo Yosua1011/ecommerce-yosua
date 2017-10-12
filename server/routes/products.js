@@ -9,7 +9,7 @@ router.get('/:slug', productController.getOne);
 router.post('/post', auth.isLogin, productController.createNew);
 router.put('/:id', auth.isLogin, productController.editOne);
 router.delete('/:id', auth.isLogin, auth.isProductAuthorAuth, productController.deleteOne);
-router.put('/:slug/upvote', auth.isLogin, productController.upvoteQuestion);
-router.put('/:slug/downvote', auth.isLogin, productController.downvoteQuestion);
+router.put('/:slug/upvote', auth.isLogin, productController.upvoteProduct);
+router.put('/:slug/downvote', auth.isLogin, productController.downvoteProduct);
 
 module.exports = router;

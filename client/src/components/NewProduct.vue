@@ -8,9 +8,9 @@
                <h4 class="modal-title" id="myModalLabel">Product Form</h4>
             </div>
             <div class="modal-body">
-               <label id="username">Title :</label><br>
+               <label id="username">Product :</label><br>
                <input type="text"  name="userRegister" value="" class="form-control" v-model="newPost.title"><br>
-               <label id="password">Product :</label><br>
+               <label id="password">Price :</label><br>
                <textarea type="text"  name="passRegister" value="" class="form-control" v-model="newPost.product"></textarea><br>
             </div>
             <div class="modal-footer">

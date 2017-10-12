@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container">
-    <h1 class="text-center">Welcome to Hacktiv Overflow <span v-if="loginstate">{{ head }}</span></h1>
+    <h1 class="text-center">Welcome to Ecommerce <span v-if="loginstate">{{ head }}</span></h1>
     <div class="row menu">
       <div class="col-md-6">
         <router-link :to="'/'">
@@ -9,6 +9,52 @@
         <router-link :to="'/newProduct'">
           <button type="button" name="button" class="btn btn-primary" v-if="loginstate === true">New Product</button>
         </router-link>
+        <button type="button" name="button" class="btn btn-primary" v-if="loginstate === true" data-toggle="modal" data-target="#myCart">Cart {{cart.length}} {{word}} </button>
+        <button type="button" name="button" class="btn btn-primary" v-if="loginstate === true" data-toggle="modal" data-target="#myTransaction">Transaction</button>
+        <div class="modal fade" id="myCart">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Cart List</h4>
+              </div>
+              <form class="">
+              <div class="modal-body" v-for="belanja in cart">
+                <ul>
+                  <p>Nama Produk: {{belanja.title}}</p>
+                  <p>Price: IDR {{belanja.product}}</p>
+                </ul>
+              </div>
+              <ul>Total Price: {{totalPrice}} </ul>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" @click="postCartToDB()">Checkout</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="myTransaction">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Transaction Detail</h4>
+              </div>
+              <form class="">
+              <div class="modal-body" v-for="belanja in transactions">
+                <ul>
+                  <li>belanja</li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Checkout</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <router-link :to="'/login'"><a class="btn btn-default" v-if="loginstate === false">Login</a></router-link>
         <button type="button" name="button" class="btn btn-danger" @click="doLogout" v-if="loginstate === true">Logout</button>
       </div>
@@ -26,14 +72,21 @@ export default {
   data () {
     return {
       loginstate: false,
-      head: null
+      head: null,
+      word: 'item'
     }
+  },
+  computed: {
+    ...mapState([
+      'cart',
+      'totalPrice',
+      'transactions'
+    ])
   },
   methods: {
     ...mapActions([
-      'getUser'
-    ]),
-    ...mapState([
+      'getUser',
+      'showTransaction'
     ]),
     doLogout () {
       localStorage.clear()
@@ -56,9 +109,22 @@ export default {
     showAlert (msg) {
       // Use sweetalret2
       this.$swal(`${msg}`)
+    },
+    postCartToDB () {
+      this.$http.post(`/transactions`, {
+        product: this.cart,
+        totalPrice: this.totalPrice
+      }, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({data}) => {
+        // this.$http.push('/')
+        console.log('bisa ngepost')
+      })
+      .catch(err => console.log(err))
     }
-  },
-  computed: {
   },
   created () {
     // this.headline()

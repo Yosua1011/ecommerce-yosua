@@ -2,7 +2,7 @@
   <div class="col-md-9">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">{{detail.title}}
+        <h3 class="panel-title">Nama Produk: {{detail.title}}
           <div style="text-align: right" v-if="loginstate === true && buttonstate === true">
             <button type="button" name="button"class="btn btn-warning" data-toggle="modal" data-target="#myEdit" @click="masukinData(detail)">
               <span class=""></span> Edit
@@ -37,14 +37,14 @@
       </div>
       <div class="panel-body">
         <div class="" style="text-align: left">
-          <p>{{detail.author}}</p>
+          <p>Penjual: {{detail.author}}</p>
           <p>
-            {{detail.product}}
+            Price: IDR {{detail.product}}
           </p>
         </div>
         <div class="panel panel-primary" v-for="answer in detail.answers">
           <div class="panel-heading">
-            <h3 class="panel-title text-left">Respon dari : {{answer.creator.username}}</h3>
+            <h3 class="panel-title text-left">Response from : {{answer.creator.username}}</h3>
           </div>
           <div class="panel-body text-left">
             {{answer.answer}}
@@ -53,23 +53,23 @@
               <span class=""></span> Delete
             </button>
         </div>
-        <button type="button" name="button"class="btn btn-warning" data-toggle="modal" data-target="#myAnswer">
-          <span class=""></span> Add Answer
+        <button type="button" name="button"class="btn btn-warning" data-toggle="modal" data-target="#myResponse">
+          <span class=""></span> Add Response
         </button>
-        <div class="modal fade" id="myAnswer">
+        <div class="modal fade" id="myResponse">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Your Answer</h4>
+                <h4 class="modal-title">Your Response</h4>
               </div>
               <form class="">
               <div class="modal-body">
-                <textarea type="text" placeholder="type your answer" v-model="komentar.answer" style="color: black"></textarea>
+                <textarea type="text" placeholder="type your response" v-model="komentar.answer" style="color: black"></textarea>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" @click="addAnswer()" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-primary" @click="addAnswer()" data-dismiss="modal">Save Response</button>
               </div>
               </form>
             </div>

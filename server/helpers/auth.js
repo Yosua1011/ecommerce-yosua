@@ -3,6 +3,7 @@ require('dotenv').config()
 const env = process.env.NODE_ENV || "development"
 const Answer = require('../models/Answer')
 const Product = require('../models/Product')
+const Transaction = require('../models/Transaction')
 
 const isLogin = (req,res,next) => {
     jwt.verify(req.headers.token, process.env.JWT_SECRET, (err, decoded) => {
@@ -56,9 +57,26 @@ const isProductAuthorAuth = (req,res,next) => {
     .catch(err => res.send(err))
 }
 
+const isCustomerAuthorAuth = (req,res,next) => {
+    Transaction.find({
+      _id: req.params.id
+    })
+    .then(transaction => {
+      console.log(req.headers.username)
+      console.log(product)
+      if (transaction[0].customer == req.headers.username) {
+        next()
+      } else {
+        res.send({message: 'Lu bukan yang bikin transaksi'})
+      }
+    })
+    .catch(err => res.send(err))
+}
+
 module.exports = {
     isLogin,
     isAdmin,
     isAnswerCreatorAuth,
-    isProductAuthorAuth
+    isProductAuthorAuth,
+    isCustomerAuthorAuth
 }

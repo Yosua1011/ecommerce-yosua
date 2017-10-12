@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const productSchema = new Schema({
   slug: {type: String},
   title: {type: String, required: true},
-  product: {type: String, required: true},
+  product: {type: Number, required: true},
   author: String,
   answers: [{type: Schema.Types.ObjectId, ref: "Answer"}],
   voteup: [{type: Schema.Types.ObjectId, ref: "User"}],

@@ -14,7 +14,10 @@ const state = {
   log: '',
   user: '',
   loginstate: false,
-  head: null
+  head: null,
+  cart: [],
+  totalPrice: 0,
+  transactions: []
 }
 
 const mutations = {
@@ -35,15 +38,25 @@ const mutations = {
   },
   setUser (state, payload) {
     state.user = payload
+  },
+  nambahBelanja (state, payload) {
+    state.cart.push(payload)
+  },
+  setTotalPrice (state, payload) {
+    state.totalPrice += payload
+  },
+  nampilinTransaksi (state, transaksi) {
+    state.transactions = transaksi
   }
 }
 
 const actions = {
-  getAllProducts ({commit}) {
+  getAllProduct ({commit}) {
     http.get('/products')
     .then(({data}) => {
       console.log('data products ', data)
       commit('productsStateContent', data)
+      this.totalPrice = 0
     })
     .catch(err => console.log(err))
   },
@@ -106,6 +119,22 @@ const actions = {
     })
     .then(({data}) => {
       console.log('Sukses keedit')
+    })
+    .catch(err => console.log(err))
+  },
+  addToCart ({commit}, data) {
+    this.totalPrice += data.product
+    console.log('Nambahin belanjaan')
+    console.log(data.product)
+    console.log(this.totalPrice)
+    commit('setTotalPrice', data.product)
+    commit('nambahBelanja', data)
+  },
+  showTransaction ({commit}, transactions) {
+    http.get('/transactions')
+    .then(({data}) => {
+      console.log('data transactions ', transactions)
+      commit('nampilinTransaksi', transactions)
     })
     .catch(err => console.log(err))
   }
